@@ -1,0 +1,237 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+/*↓ VARIAVEIS GLOBAIS ↓*/
+float totalMaterialLimpeza = 0.0;
+float totalAlimentos = 0.0;
+float totalPadaria = 0.0;
+float totaldoDIA = 0.0;
+float viewMenu = 0.0;
+int numeroClientes = 0;
+/* ↓ MENU PRINCIPAL ↓*/
+void exibirMenu(){
+    system("cls");/* para limpar o terminal*/
+    printf("=====Menu=====\n");
+    printf("1-Material de Limpeza\n");
+    printf("2-Venda de Alimentos\n");
+    printf("3-Padaria\n");
+    printf("4-Sair\n");
+    printf("Escolha uma opção:\n");
+}
+/*↓ PARA O PROCESSO DE COMPRA ↓*/
+void processarCompra(float preco, float *totalCategoria){
+    int quantidade;
+    printf(" Digite a quantidade: ");
+    scanf("%d", &quantidade);
+    
+    if (quantidade <= 0){
+        printf("Erro! Digite uma quantidade valida\n");
+        getchar();/* Aguarda o usuário pressionar Enter*/
+        getchar(); 
+    }
+    else if (quantidade >= 101) {
+        printf("Limite maximo de itens por compra é de 100 unidades");
+        getchar();/* Aguarda o usuário pressionar Enter*/
+        getchar(); 
+    }
+    else{
+    float subtotal = quantidade * preco;
+    *totalCategoria += subtotal;
+    viewMenu += subtotal;
+    }
+}
+/*↓ AQUI COMEÇA O MENU DE MATERIAIS DE LIMPEZA ↓*/
+    void materialdeLimpeza(){
+        int  opcao;
+        
+        do{
+            system("cls");
+            printf("Total: %.2f\n", viewMenu);
+            printf("====MATERIAIS DE LIMPEZA====\n");
+            printf("11. Detergente - R$1.99\n");
+            printf("12. Sabao em Po (1kg) - R$8.99\n");
+            printf("13. Esponja - R$1.50\n");
+            printf("14. Amaciante (1Lt) - R$15.00\n");
+            printf("15. Voltar ao Menu Principal\n");
+            printf("Escolha um item: ");
+            scanf("%d", &opcao);
+        switch(opcao){
+            case 11: processarCompra(1.99, &totalMaterialLimpeza); break;
+            case 12: processarCompra(8.99, &totalMaterialLimpeza); break;
+            case 13: processarCompra(1.50, &totalMaterialLimpeza); break;
+            case 14: processarCompra(15.00, &totalMaterialLimpeza); break;
+            case 15: break;
+            default: printf("Opcao invalida: pressione enter\n");
+            getchar();
+            getchar();
+        }    
+      } while (opcao != 15);   
+    }
+    /*↓ AQUI COMEÇA O MENU DE VENDA DE ALIMENTOS ↓*/
+    void vendaAlimentos(){
+        int  opcao;
+        
+        do{
+            system("cls");
+            printf("Total: %.2f\n", viewMenu);
+            printf("====VENDA DE ALIMENTOS====\n");
+            printf("21. Cafe - R$19.99\n");
+            printf("22. Leite (cx) - R$5.90\n");
+            printf("23. Arroz (1kg) - R$4.50\n");
+            printf("24. Feijao Preto (1kg) - R$8.00\n");
+            printf("25. Acucar (1kg) - R$5.00\n");
+            printf("26. Voltar ao Menu Principal\n");
+            printf("Escolha um item: ");
+            scanf("%d", &opcao);
+        switch(opcao){
+            case 21: processarCompra(19.99, &totalAlimentos); break;
+            case 22: processarCompra(5.90, &totalAlimentos); break;
+            case 23: processarCompra(4.50, &totalAlimentos); break;
+            case 24: processarCompra(8.00, &totalAlimentos); break;
+            case 25: processarCompra(5.00, &totalAlimentos); break;
+            case 26: break;
+            default: printf("Opcao invalida: pressione enter\n");
+            getchar();
+            getchar();
+        }    
+     } while (opcao != 26); 
+    }
+    /*↓ AQUI COMEÇA O MENU DA PADARIA ↓*/
+    void padaria(){
+        int  opcao;
+        
+        do{
+            system("cls");
+            printf("Total: %.2f", viewMenu);
+            printf("\n==== Padaria ====\n");
+            printf("31. Pao de Forma - R$9.50\n");
+            printf("32. Pao Integral - R$12.50\n");
+            printf("33. Pao Frances (Unid) - R$1.90\n");
+            printf("34. Sonho - R$8.50\n");
+            printf("35. Voltar ao Menu Principal\n");
+            printf("Escolha um item: ");
+            scanf("%d", &opcao);
+        switch (opcao) {
+            case 31: processarCompra(9.50, &totalPadaria);break;
+            case 32: processarCompra(12.50, &totalPadaria); break;
+            case 33: processarCompra(1.90, &totalPadaria); break;
+            case 34: processarCompra(8.50, &totalPadaria); break;
+            case 35: break;
+            default: printf("Opcao invalida! pressione enter:\n");
+            getchar();
+            getchar();
+        }    
+      } while (opcao != 35);     
+    }
+    
+    /* INICIO A FUNÇÃO PARA O PAGAMENTO*/
+    void pagamento(){
+        system ("cls");
+        float totalGeral = totalMaterialLimpeza + totalAlimentos + totalPadaria;
+        int metodoDePagamento;
+        printf("==PAGAMENTO==");
+        printf("Total Materias de Limpeza: R$%.2f\n", totalMaterialLimpeza);
+        printf("Total Venda de Alimentos: R$%.2f\n", totalAlimentos);
+        printf("Total Padaria: R$%.2f\n", totalPadaria);
+        printf("Total geral: R$%.2f\n", totalGeral);
+        if (totalGeral == 0) {
+        printf("Nenhuma compra foi realizada! pressione enter para voltar ao menu:\n");
+        getchar();
+        getchar();
+        return;
+    }
+       printf("\n Escolha uma forma de Pagamento: \n");
+       printf(" 1- Em dinheiro(com desconto incluso)\n");
+       printf(" 2- Cartão\n");
+       scanf("%d", &metodoDePagamento);
+       if(metodoDePagamento ==1){
+           float desconto = 0.0;
+       
+       if (totalGeral <= 50.00){
+           desconto = totalGeral * 0.05;
+       }
+       else if (totalGeral <= 100.00){
+       desconto = totalGeral * 0.10;
+       }
+       else{
+           desconto = totalGeral * 0.18;
+       }
+       
+       float valor_comDesconto = totalGeral - desconto;
+       float valorRecebido, troco;
+       printf("Total a pagar com desconto: R$%.2f\n", valor_comDesconto);
+       do {
+           printf("Digite o Valor recebido\n");
+           scanf("%f", &valorRecebido);
+           
+           if(valorRecebido < valor_comDesconto){
+               printf("Saldo inferior ao valor da compra\n");
+           }
+       } while( valorRecebido < valor_comDesconto);
+            troco = valorRecebido - valor_comDesconto;
+            printf("Troco: R$%.2f\n", troco);
+            esperaopagamento();
+           
+       }else if (metodoDePagamento == 2) {  // Pagamento por cartão
+            int confirmacao;
+            printf("Pagamento na maquina realizado? (1 - Sim, 0 - Não):\n ");
+            scanf("%d", &confirmacao);
+        if (confirmacao != 1) {
+            printf("Pagamento nao concluído. Escolha outra forma de pagamento.\n");
+            getchar();
+            getchar();
+            pagamento();  // Chama a função novamente para tentar outro pagamento
+            return;
+
+        }
+       }else{
+           printf("Opção invalida, pressione enter para tentar novamente\n");
+           getchar();
+           getchar();
+           pagamento();
+           return;
+       }
+        esperaopagamento();
+            totaldoDIA += totalGeral;
+            numeroClientes++;
+        // Zera as variaveis  totais após o pagamento ser concluído
+            totalMaterialLimpeza = 0.0;
+            totalAlimentos = 0.0;
+            totalPadaria = 0.0;
+            viewMenu = 0.0;   
+    }   
+        void esperaopagamento(){
+        printf("Pagamento concluido! aperte enter para finalizar seu atendimento.\n");
+        getchar();
+        getchar();
+}
+
+
+
+int main()
+{
+    int opcao;
+    viewMenu = 0.0;
+    
+    do{
+        exibirMenu();
+        scanf("%d", &opcao);
+        switch (opcao) {
+        case 1: materialdeLimpeza(); break;
+        case 2: vendaAlimentos(); break;
+        case 3: padaria(); break;
+        case 4: pagamento(); break;
+        case 5:
+        printf("\nEncerrando o sistema...\n");
+        printf("Lucro do dia: R$%.2f\n", totaldoDIA);
+        printf("Total de clientes durante o dia:%d\n", numeroClientes);
+        break;
+        default: printf("Opcao invalida! pressione enter e Tente novamente.\n");
+        getchar();
+        getchar();
+    }
+    }   while(opcao != 5);
+        
+    
+
+        return 0;}
